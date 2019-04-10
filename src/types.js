@@ -11,6 +11,7 @@ export const types = {
   showDomain: t.bool,
   showLabel: t.bool,
   showUnit: t.bool,
+  thresholds: t.arrayOf(t.number),
   unit: t.string,
   value: t.number.isRequired,
   width: t.number,

@@ -18,11 +18,12 @@ class Demo extends Component {
     return <div>
       <h1>react-advanced-gauge Demo</h1>
       <Gauge
+        color={['red', 'orange', 'green']}
         height={300}
         min={-100}
         max={100}
-        label="fkdsljaflkasdj "
-        thresholds="50,70,90"
+        label="fkdsljaflkasdj"
+        thresholds={[50,70]}
         unit="V"
         value={this.state.value}
         // showDomain={false}

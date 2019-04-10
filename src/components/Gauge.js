@@ -69,7 +69,7 @@ class Gauge extends Component {
     // const gaugeHeight = this.smallerSide * 0.8;
     this.SVGsize = this.smallerSide * 0.7;
 
-    this.completeThresholds = thresholds ? [...thresholds.split(','), max] : [max];
+    this.completeThresholds = thresholds ? [...thresholds, max] : [max];
 
     this.paint = new Rainbow();
     this.paint.setSpectrum(...colors);
@@ -124,7 +124,7 @@ class Gauge extends Component {
 
     this.textValue = chart.append('svg:text')
       .text(value)
-      .style('font-size', `${this.SVGsize/5}px`)
+      .style('font-size', `${this.SVGsize/4}px`)
       .style('font-weight', '600')
       .style('fill', '#555')
       .style('text-anchor', 'middle')
@@ -133,11 +133,11 @@ class Gauge extends Component {
       if (showUnit) {
         chart.append('svg:text')
           .text(unit)
-          .style('font-size', `${this.SVGsize/15}px`)
+          .style('font-size', `${this.SVGsize/12}px`)
           .style('font-weight', '600')
           .style('fill', '#555')
           .style('text-anchor', 'middle')
-          .style('transform', `translateY(${this.SVGsize/5}px)`);
+          .style('transform', `translateY(${this.SVGsize/4}px)`);
       }
   }
 

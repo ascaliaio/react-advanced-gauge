@@ -17,13 +17,13 @@ Describe react-advanced-gauge here.
 
 ## Todo
 
-* custom width
-* has domain
-* min & max
-* thresholds
+* ~~custom width~~
+* ~~has domain~~
+* ~~min & max~~
+* ~~thresholds~~
 * threshold custom colors
 * negative
 * symetric
 * domain labels
-* unit/value
-* label
+* ~~unit/value~~
+* ~~label~~

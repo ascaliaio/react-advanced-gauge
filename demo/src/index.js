@@ -23,6 +23,7 @@ class Demo extends Component {
         max={100}
         label="fkdsljaflkasdj "
         thresholds="50,70,90"
+        unit="V"
         value={this.state.value}
         // showDomain={false}
         // width={300}

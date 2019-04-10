@@ -14,3 +14,16 @@ Describe react-advanced-gauge here.
 
 [coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.png?style=flat-square
 [coveralls]: https://coveralls.io/github/user/repo
+
+## Todo
+
+* custom width
+* has domain
+* min & max
+* thresholds
+* threshold custom colors
+* negative
+* symetric
+* domain labels
+* unit/value
+* label

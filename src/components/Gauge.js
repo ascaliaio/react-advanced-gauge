@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { select } from 'd3-selection';
+import {} from 'd3-transition/src/selection';
 import Rainbow from 'rainbowvis.js';
 import { defaults } from '../defaults';
 import { types } from '../types';
 import {
   buildDomain,
+  buildPath,
   buildValuePath,
+  getContainerSize,
 } from '../utils';
+import {
+  GaugeContainerStyles,
+  GaugeLabelStyles,
+} from '../styles';
 
 class Gauge extends Component {
 
@@ -18,72 +25,146 @@ class Gauge extends Component {
     this.renderGauge();
   }
 
-  componentDidUpdate() {
-    this.container && select(this.container).html(null);
-    this.renderGauge();
+  componentDidUpdate(prevProps) {
+    const {
+      max,
+      min,
+      value,
+    } = this.props;
+    // TODO: Implement handling of other props changes
+    if (prevProps.value !== this.props.value) {
+      this.changeValue(value, min, max);
+    }
+  }
+
+  changeValue(value, min, max) {
+    this.textValue.text(value);
+    if (this.valueLine) {
+      this.valueLine
+        .style('fill', this.paint.colourAt(this.completeThresholds.findIndex(threshold => value < threshold)))
+        .attr('d', buildValuePath(this.SVGsize, min, max, value));
+    }
   }
 
   renderGauge() {
     const {
+      colors,
       height,
       max,
       min,
       showDomain,
+      showUnit,
       thresholds,
+      unit,
       value,
       width,
     } = this.props;
 
     const el = this.container;
-    // const containerHeight = el.clientHeight - 100;
-    const containerHeight = height;
-    // const containerWidth = el.clientWidth - 100;
-    const containerWidth = width;
-    const gaugeHeight = containerHeight * 0.8;
-    const smallerSide = Math.min(height, width);
+    this.containerWidth = width ? width - 50 : getContainerSize(this.sizeContainer)[0];;
+    this.containerHeight = height ? height - 50 : getContainerSize(this.sizeContainer)[1];
+    this.smallerSide = Math.min(this.containerHeight, this.containerWidth);
+    const gaugeHeight = this.smallerSide * 0.8;
+    this.SVGsize = this.smallerSide * 0.6;
 
-    const completeThresholds = thresholds ? [...thresholds.split(','), max] : [max];
+    this.completeThresholds = thresholds ? [...thresholds.split(','), max] : [max];
 
-    const paint = new Rainbow();
-    paint.setSpectrum('green', 'orange', 'red');
-    paint.setNumberRange(0, Math.max(completeThresholds.length - 1, 1));
+    this.paint = new Rainbow();
+    this.paint.setSpectrum(...colors);
+    this.paint.setNumberRange(0, Math.max(this.completeThresholds.length - 1, 1));
 
     const chart = select(el).append('svg:svg')
 			.attr('class', 'chart')
-      .attr('height', containerHeight)
-			.attr('width', containerWidth)
+      .attr('height', this.smallerSide)
+			.attr('width', this.smallerSide)
       .append('svg:g')
-      .attr('transform', `translate(${containerWidth/2 },${containerWidth/2 + gaugeHeight/4})`);
+      .attr('transform', `translate(${this.containerHeight/2 },${this.SVGsize})`);
 
-    const domain = buildDomain(containerHeight, containerWidth, min, max, completeThresholds);
+    if (showDomain) {
+      chart.selectAll('path')
+        .data(this.completeThresholds)
+        .enter().append('svg:path')
+        .style('fill', (d, i) => this.paint.colourAt(i))
+        .attr('d', buildDomain(this.SVGsize, this.SVGsize, min, max, this.completeThresholds));
+    }
 
-    chart.selectAll('path')
-      .data(completeThresholds)
-      .enter().append('svg:path')
-      .style('fill', function(d, i){
-        return paint.colourAt(i);
-      })
-      .attr('d', domain);
+    const path = buildPath(this.SVGsize);
+    const valuePathGroup = chart.append('svg:g');
 
-    const line = buildValuePath(containerHeight, min, max, value);
+    valuePathGroup.append('svg:path')
+    .style('fill', 'rgba(0,0,0,0.05)')
+    .attr('d', path);
+
+    const domainLabel = valuePathGroup
+      .append('svg:g')
+      .attr('class', 'domainLabel');
+
+    domainLabel.append('svg:text')
+      .text(min)
+      .style('font-size', `${this.SVGsize/16}px`)
+      .style('fill', '#555')
+      .style('text-anchor', 'middle')
+      .attr('class', 'kita')
+      .style('transform', `translate(-${valuePathGroup.node().getBBox().width / 2}px, ${this.SVGsize/6}px)`);
+
+    domainLabel.append('svg:text')
+      .text(max)
+      .style('font-size', `${this.SVGsize/16}px`)
+      .style('fill', '#555')
+      .style('text-anchor', 'middle')
+      .attr('class', 'kita')
+      .style('transform', `translate(${valuePathGroup.node().getBBox().width / 2}px, ${this.SVGsize/6}px)`);
 
     this.valueLine = chart.append('svg:path')
-      .data([{ value: value !== '-' ? Math.max(Math.min(value, max), min) : 0 }])
-			.style('fill', paint.colourAt(completeThresholds.findIndex(threshold => value < threshold)))
-      .attr('d', line);
+			.style('fill', this.paint.colourAt(this.completeThresholds.findIndex(threshold => value < threshold)))
+      .attr('d', buildValuePath(this.SVGsize, min, max, value));
 
-    chart.append('svg:text')
+    this.textValue = chart.append('svg:text')
       .text(value)
-      .style('font-size', `${smallerSide/5}px`)
+      .style('font-size', `${this.SVGsize/5}px`)
       .style('font-weight', '600')
       .style('fill', '#555')
       .style('text-anchor', 'middle')
-      .style('transform', `translateY(${smallerSide/10}px)`);
+      .style('transform', `translateY(${this.SVGsize/10}px)`);
+
+      if (showUnit) {
+        chart.append('svg:text')
+          .text(unit)
+          .style('font-size', `${this.SVGsize/15}px`)
+          .style('font-weight', '600')
+          .style('fill', '#555')
+          .style('text-anchor', 'middle')
+          .style('transform', `translateY(${this.SVGsize/5}px)`);
+      }
   }
 
   render() {
+    const {
+      height,
+      label,
+      labelStyles,
+      width,
+    } = this.props;
+
     return (
-      <div ref={cont => this.container = cont} style={{ width: '500px', height: '400px', background: '#eee' }} />
+      <div
+        ref={cont => this.sizeContainer = cont}
+        style={{
+          height: height,
+          width: width,
+          ...GaugeContainerStyles
+        }}
+      >
+        <div ref={cont => this.container = cont} />
+        <div
+          style={{
+            ...GaugeLabelStyles,
+            ...labelStyles,
+          }}
+        >
+          {label}
+        </div>
+      </div>
     )
   }
 }

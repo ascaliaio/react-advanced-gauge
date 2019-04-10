@@ -1,12 +1,14 @@
 export const defaults = {
-  colors: ['green', 'orange', 'red'],
-  height: 200,
+  colors: ['#2ecc71', '#f39c12', '#e74c3c'],
   isNegative: false,
-  label: null,
+  label: 'This is details about Gauge',
+  labelStyles: {},
   min: 0,
   max: 100,
   showDomain: true,
+  showDomainLabels: false,
   showLabel: true,
+  showTitle: true,
   showUnit: true,
-  width: 300,
+  unit: '',
 }

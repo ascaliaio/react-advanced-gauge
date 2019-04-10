@@ -61,11 +61,16 @@ class Gauge extends Component {
     } = this.props;
 
     const el = this.container;
-    this.containerWidth = width ? width - 50 : getContainerSize(this.sizeContainer)[0];;
-    this.containerHeight = height ? height - 50 : getContainerSize(this.sizeContainer)[1];
+    this.containerWidth = width ? width - 20 : getContainerSize(this.sizeContainer)[0];;
+    this.containerHeight = height ? height - 20 : getContainerSize(this.sizeContainer)[1];
     this.smallerSide = Math.min(this.containerHeight, this.containerWidth);
-    const gaugeHeight = this.smallerSide * 0.8;
-    this.SVGsize = this.smallerSide * 0.6;
+    // const gaugeHeight = this.smallerSide * 0.8;
+    this.SVGsize = this.smallerSide * 0.7;
+
+    console.log('Container height: ', this.containerHeight)
+    console.log('Container width: ', this.containerWidth)
+    console.log('Smaller size: ', this.smallerSide)
+    console.log('SVG size: ', this.SVGsize)
 
     this.completeThresholds = thresholds ? [...thresholds.split(','), max] : [max];
 
@@ -78,7 +83,7 @@ class Gauge extends Component {
       .attr('height', this.smallerSide)
 			.attr('width', this.smallerSide)
       .append('svg:g')
-      .attr('transform', `translate(${this.containerHeight/2 },${this.SVGsize})`);
+      .attr('transform', `translate(${this.smallerSide / 2},${(this.smallerSide / 2) * 1.25})`);
 
     if (showDomain) {
       chart.selectAll('path')
@@ -105,7 +110,7 @@ class Gauge extends Component {
       .style('fill', '#555')
       .style('text-anchor', 'middle')
       .attr('class', 'kita')
-      .style('transform', `translate(-${valuePathGroup.node().getBBox().width / 2}px, ${this.SVGsize/6}px)`);
+      .style('transform', `translate(-${valuePathGroup.node().getBBox().width / 2}px, ${this.SVGsize/5}px)`);
 
     domainLabel.append('svg:text')
       .text(max)
@@ -113,7 +118,7 @@ class Gauge extends Component {
       .style('fill', '#555')
       .style('text-anchor', 'middle')
       .attr('class', 'kita')
-      .style('transform', `translate(${valuePathGroup.node().getBBox().width / 2}px, ${this.SVGsize/6}px)`);
+      .style('transform', `translate(${valuePathGroup.node().getBBox().width / 2}px, ${this.SVGsize/5}px)`);
 
     this.valueLine = chart.append('svg:path')
 			.style('fill', this.paint.colourAt(this.completeThresholds.findIndex(threshold => value < threshold)))

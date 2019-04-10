@@ -18,14 +18,14 @@ class Demo extends Component {
     return <div>
       <h1>react-advanced-gauge Demo</h1>
       <Gauge
-        height={500}
+        height={300}
         min={-100}
         max={100}
         label="fkdsljaflkasdj "
         thresholds="50,70,90"
         value={this.state.value}
         // showDomain={false}
-        width={800}
+        width={300}
       />
     </div>
   }

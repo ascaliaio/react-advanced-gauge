@@ -46,4 +46,12 @@ export const buildValuePath = (height, min, max, value) => arc()
     return deg2rad(MIN_ANGLE + (valueInDomain(0.01, 1, percentage) * (MAX_ANGLE - MIN_ANGLE)));
   });
 
+export const paintValuePath = (value, thresholds, colors) => {
+  const index = thresholds.findIndex(threshold => value < threshold);
+  if (index === -1) {
+    return colors.colourAt(thresholds.length - 1);
+  }
+  return colors.colourAt(index);
+}
+
 export const getContainerSize = element => [element.clientWidth, Math.max(element.clientHeight, MIN_HEIGHT)];

@@ -12,7 +12,7 @@ class Demo extends Component {
   }
   componentDidMount() {
     // setInterval(() => this.setState({ value: this.state.value + Math.round(Math.random() * 20) - 10}), 2000);
-    setInterval(() => this.setState({ value: Math.round(Math.random() * 200) - 100}), 2000);
+    setInterval(() => this.setState({ value: Math.round(Math.random() * 500) - 200}), 2000);
   }
   render() {
     return <div>
@@ -25,7 +25,7 @@ class Demo extends Component {
         thresholds="50,70,90"
         value={this.state.value}
         // showDomain={false}
-        width={300}
+        // width={300}
       />
     </div>
   }

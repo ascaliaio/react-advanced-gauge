@@ -9,6 +9,7 @@ import {
   buildPath,
   buildValuePath,
   getContainerSize,
+  paintValuePath,
 } from '../utils';
 import {
   GaugeContainerStyles,
@@ -41,7 +42,8 @@ class Gauge extends Component {
     this.textValue.text(value);
     if (this.valueLine) {
       this.valueLine
-        .style('fill', this.paint.colourAt(this.completeThresholds.findIndex(threshold => value < threshold)))
+        // .style('fill', this.paint.colourAt(this.completeThresholds.findIndex(threshold => value < threshold)))
+        .style('fill', paintValuePath(value, this.completeThresholds, this.paint))
         .attr('d', buildValuePath(this.SVGsize, min, max, value));
     }
   }
@@ -66,11 +68,6 @@ class Gauge extends Component {
     this.smallerSide = Math.min(this.containerHeight, this.containerWidth);
     // const gaugeHeight = this.smallerSide * 0.8;
     this.SVGsize = this.smallerSide * 0.7;
-
-    console.log('Container height: ', this.containerHeight)
-    console.log('Container width: ', this.containerWidth)
-    console.log('Smaller size: ', this.smallerSide)
-    console.log('SVG size: ', this.SVGsize)
 
     this.completeThresholds = thresholds ? [...thresholds.split(','), max] : [max];
 
@@ -121,7 +118,8 @@ class Gauge extends Component {
       .style('transform', `translate(${valuePathGroup.node().getBBox().width / 2}px, ${this.SVGsize/5}px)`);
 
     this.valueLine = chart.append('svg:path')
-			.style('fill', this.paint.colourAt(this.completeThresholds.findIndex(threshold => value < threshold)))
+			// .style('fill', this.paint.colourAt(this.completeThresholds.findIndex(threshold => value < threshold)))
+			.style('fill', paintValuePath(value, this.completeThresholds, this.paint))
       .attr('d', buildValuePath(this.SVGsize, min, max, value));
 
     this.textValue = chart.append('svg:text')

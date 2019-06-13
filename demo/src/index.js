@@ -11,7 +11,6 @@ class Demo extends Component {
     };
   }
   componentDidMount() {
-    // setInterval(() => this.setState({ value: this.state.value + Math.round(Math.random() * 20) - 10}), 2000);
     setInterval(() => this.setState({ value: Math.round(Math.random() * 200) - 120}), 2000);
   }
   render() {
@@ -26,8 +25,7 @@ class Demo extends Component {
         unit="Hz"
         value={this.state.value}
         valueMatchColor
-        // showDomain={false}
-        // width={300}
+        width={300}
       />
     </div>
   }

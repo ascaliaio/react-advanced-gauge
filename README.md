@@ -21,9 +21,11 @@ Describe react-advanced-gauge here.
 * ~~has domain~~
 * ~~min & max~~
 * ~~thresholds~~
-* threshold custom colors
+* ~~threshold custom colors~~
 * negative
 * symetric
 * domain labels
 * ~~unit/value~~
-* ~~label~~
+
+## Maybe
+* label

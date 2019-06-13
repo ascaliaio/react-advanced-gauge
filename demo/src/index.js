@@ -18,8 +18,8 @@ class Demo extends Component {
     return <div>
       <h1>react-advanced-gauge Demo</h1>
       <Gauge
-        color={['red', 'orange', 'green']}
-        height={300}
+        colors={['#3498db', '#2980b9', '#34495e']}
+        height={600}
         min={-100}
         max={100}
         label="fkdsljaflkasdj"

@@ -3,7 +3,7 @@ module.exports = {
   npm: {
     esModules: true,
     umd: {
-      global: 'AdvancedGauge',
+      global: 'AdvancedGaugeReact',
       externals: {
         react: 'React'
       }

@@ -152,6 +152,7 @@ class Gauge extends Component {
 
     return (
       <div
+        className="rag-container"
         ref={cont => this.sizeContainer = cont}
         style={{
           height: height,

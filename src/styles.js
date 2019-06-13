@@ -6,9 +6,3 @@ export const GaugeContainerStyles = {
   fontFamily: 'sans-serif',
   justifyContent: 'center',
 };
-
-export const GaugeLabelStyles = {
-  fontFamily: 'sans-serif',
-  fontSize: '12px',
-  color: '#555',
-}

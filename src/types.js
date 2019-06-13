@@ -4,8 +4,6 @@ export const types = {
   colors: t.array,
   height: t.number,
   isNegative: t.bool,
-  label: t.oneOfType([t.string, t.element]),
-  labelStyles: t.object,
   min: t.number,
   max: t.number,
   showDomain: t.bool,

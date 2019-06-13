@@ -13,7 +13,6 @@ import {
 } from '../utils';
 import {
   GaugeContainerStyles,
-  GaugeLabelStyles,
 } from '../styles';
 
 class Gauge extends Component {
@@ -144,8 +143,6 @@ class Gauge extends Component {
   render() {
     const {
       height,
-      label,
-      labelStyles,
       width,
     } = this.props;
 
@@ -159,14 +156,6 @@ class Gauge extends Component {
         }}
       >
         <div ref={cont => this.container = cont} />
-        <div
-          style={{
-            ...GaugeLabelStyles,
-            ...labelStyles,
-          }}
-        >
-          {label}
-        </div>
       </div>
     )
   }

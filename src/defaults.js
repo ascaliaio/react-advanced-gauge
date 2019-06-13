@@ -1,8 +1,12 @@
+const colors = {
+  RED: '#e74c3c',
+  YELLOW: '#f39c12',
+  GREEN: '#2ecc71',
+};
+
 export const defaults = {
-  colors: ['#2ecc71', '#f39c12', '#e74c3c'],
+  colors: [colors.GREEN, colors.YELLOW, colors.RED],
   isNegative: false,
-  label: 'This is details about Gauge',
-  labelStyles: {},
   min: 0,
   max: 100,
   showDomain: true,
@@ -11,4 +15,4 @@ export const defaults = {
   showTitle: true,
   showUnit: true,
   unit: '',
-}
+};

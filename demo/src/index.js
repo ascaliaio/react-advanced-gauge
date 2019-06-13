@@ -21,11 +21,12 @@ class Demo extends Component {
         colors={['#3498db', '#2980b9', '#34495e']}
         height={600}
         min={-100}
-        max={100}
+        max={200}
         label="fkdsljaflkasdj"
-        thresholds={[50,70]}
+        thresholds={[50,120]}
         unit="V"
         value={this.state.value}
+        valueMatchColor
         // showDomain={false}
         // width={300}
       />

@@ -5,6 +5,7 @@ const colors = {
 };
 
 export const defaults = {
+  animated: true,
   colors: [colors.GREEN, colors.YELLOW, colors.RED],
   isNegative: false,
   min: 0,
@@ -15,4 +16,5 @@ export const defaults = {
   showTitle: true,
   showUnit: true,
   unit: '',
+  valueMatchColor: false,
 };

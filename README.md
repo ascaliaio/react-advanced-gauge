@@ -26,6 +26,7 @@ Describe react-advanced-gauge here.
 * symetric
 * domain labels
 * ~~unit/value~~
+* animated transitions
 
 ## Maybe
 * label

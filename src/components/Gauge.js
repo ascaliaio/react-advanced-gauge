@@ -30,20 +30,23 @@ class Gauge extends Component {
       max,
       min,
       value,
+      valueMatchColor,
     } = this.props;
     // TODO: Implement handling of other props changes
     if (prevProps.value !== this.props.value) {
-      this.changeValue(value, min, max);
+      this.changeValue(value, min, max, valueMatchColor);
     }
   }
 
-  changeValue(value, min, max) {
-    this.textValue.text(value);
+  changeValue(value, min, max, valueMatchColor = false) {
+    this.textValue
+      .text(value)
+      .style('fill', valueMatchColor ? paintValuePath(value, this.completeThresholds, this.paint) : '#555')
     if (this.valueLine) {
+      // TODO: add animation based on animated prop
       this.valueLine
-        // .style('fill', this.paint.colourAt(this.completeThresholds.findIndex(threshold => value < threshold)))
-        .style('fill', paintValuePath(value, this.completeThresholds, this.paint))
-        .attr('d', buildValuePath(this.SVGsize, min, max, value));
+        .attr('d', buildValuePath(this.SVGsize, min, max, value))
+        .style('fill', paintValuePath(value, this.completeThresholds, this.paint));
     }
   }
 
@@ -58,6 +61,7 @@ class Gauge extends Component {
       thresholds,
       unit,
       value,
+      valueMatchColor,
       width,
     } = this.props;
 
@@ -93,8 +97,8 @@ class Gauge extends Component {
     const valuePathGroup = chart.append('svg:g');
 
     valuePathGroup.append('svg:path')
-    .style('fill', 'rgba(0,0,0,0.05)')
-    .attr('d', path);
+      .style('fill', 'rgba(0,0,0,0.05)')
+      .attr('d', path);
 
     const domainLabel = valuePathGroup
       .append('svg:g')
@@ -105,7 +109,7 @@ class Gauge extends Component {
       .style('font-size', `${this.SVGsize/16}px`)
       .style('fill', '#555')
       .style('text-anchor', 'middle')
-      .attr('class', 'kita')
+      .attr('class', 'rag-domain-min')
       .style('transform', `translate(-${valuePathGroup.node().getBBox().width / 2}px, ${this.SVGsize/5}px)`);
 
     domainLabel.append('svg:text')
@@ -113,7 +117,7 @@ class Gauge extends Component {
       .style('font-size', `${this.SVGsize/16}px`)
       .style('fill', '#555')
       .style('text-anchor', 'middle')
-      .attr('class', 'kita')
+      .attr('class', 'rag-domain-max')
       .style('transform', `translate(${valuePathGroup.node().getBBox().width / 2}px, ${this.SVGsize/5}px)`);
 
     this.valueLine = chart.append('svg:path')
@@ -125,7 +129,7 @@ class Gauge extends Component {
       .text(value)
       .style('font-size', `${this.SVGsize/4}px`)
       .style('font-weight', '600')
-      .style('fill', '#555')
+      .style('fill', valueMatchColor ? paintValuePath(value, this.completeThresholds, this.paint) : '#555')
       .style('text-anchor', 'middle')
       .style('transform', `translateY(${this.SVGsize/10}px)`);
 

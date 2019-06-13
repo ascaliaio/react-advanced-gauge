@@ -1,6 +1,7 @@
 import t from 'prop-types'
 
 export const types = {
+  animated: t.bool,
   colors: t.array,
   height: t.number,
   isNegative: t.bool,
@@ -12,6 +13,7 @@ export const types = {
   thresholds: t.arrayOf(t.number),
   unit: t.string,
   value: t.number.isRequired,
+  valueMatchColor: t.bool,
   width: t.number,
 }
 

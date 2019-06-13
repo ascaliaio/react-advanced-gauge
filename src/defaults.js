@@ -13,7 +13,6 @@ export const defaults = {
   showDomain: true,
   showDomainLabels: false,
   showLabel: true,
-  showTitle: true,
   showUnit: true,
   unit: '',
   valueMatchColor: false,

@@ -1,6 +1,6 @@
 export const GaugeContainerStyles = {
   alignItems: 'center',
-  backgroundColor: '#f5f5f5',
+  backgroundColor: 'transparent',
   display: 'flex',
   flexDirection: 'column',
   fontFamily: 'sans-serif',

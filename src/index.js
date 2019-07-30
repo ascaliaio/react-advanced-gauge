@@ -1,1 +1,1 @@
-export { default as Gauge } from '../src/components/Gauge';
+export { default as Gauge } from './components/Gauge.js';

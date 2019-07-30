@@ -4,6 +4,7 @@ import {} from 'd3-transition/src/selection';
 import Rainbow from 'rainbowvis.js';
 import { defaults } from '../defaults';
 import { types } from '../types';
+import { DEFAULT_VALUE_PATH_COLOR } from '../constants';
 import {
   buildDomain,
   buildPath,
@@ -41,10 +42,12 @@ class Gauge extends Component {
   changeValue(value, min, max, valueMatchColor = false) {
     this.textValue
       .text(value)
-      .style('fill', valueMatchColor ? paintValuePath(value, this.completeThresholds, this.paint) : '#555')
+      .style('fill', valueMatchColor ? paintValuePath(value, this.completeThresholds, this.paint) : DEFAULT_VALUE_PATH_COLOR)
     if (this.valueLine) {
       // TODO: add animation based on animated prop
       this.valueLine
+        .transition()
+        .duration(300)
         .attr('d', buildValuePath(this.SVGsize, min, max, value))
         .style('fill', paintValuePath(value, this.completeThresholds, this.paint));
     }

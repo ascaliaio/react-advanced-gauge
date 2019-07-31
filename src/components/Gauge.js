@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { select } from 'd3-selection';
 import {} from 'd3-transition/src/selection';
-import Rainbow from 'rainbowvis.js';
+import { interpolateRgbBasis } from 'd3-interpolate';
 import { defaults } from '../defaults';
 import { types } from '../types';
 import { DEFAULT_VALUE_PATH_COLOR } from '../constants';
@@ -80,10 +80,8 @@ class Gauge extends Component {
     this.SVGsize = this.smallerSide * 0.7;
 
     this.completeThresholds = thresholds ? [...thresholds, max] : [max];
-
-    this.paint = new Rainbow();
-    this.paint.setSpectrum(...colors);
-    this.paint.setNumberRange(0, Math.max(this.completeThresholds.length - 1, 1));
+    
+    this.paint = interpolateRgbBasis(colors);
 
     this.chartContainer = select(el).append('svg:svg')
       .attr('class', 'chart')
@@ -98,7 +96,7 @@ class Gauge extends Component {
       chart.selectAll('path')
         .data(this.completeThresholds)
         .enter().append('svg:path')
-        .style('fill', (d, i) => this.paint.colourAt(i))
+        .style('fill', (d, i) => this.paint(i/(thresholds.length)))
         .attr('d', buildDomain(this.SVGsize, this.SVGsize, min, max, this.completeThresholds));
     }
 

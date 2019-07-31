@@ -10,10 +10,10 @@ export const defaults = {
   isNegative: false,
   min: 0,
   max: 100,
-  showDomain: true,
+  showDomain: false,
   showDomainLabels: false,
-  showLabel: true,
-  showUnit: true,
+  showLabel: false,
+  showUnit: false,
   unit: '',
   valueMatchColor: false,
 };

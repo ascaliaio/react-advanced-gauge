@@ -28,14 +28,19 @@ class Gauge extends Component {
 
   componentDidUpdate(prevProps) {
     const {
+      height,
       max,
       min,
       value,
       valueMatchColor,
+      width,
     } = this.props;
     // TODO: Implement handling of other props changes
     if (prevProps.value !== this.props.value) {
       this.changeValue(value, min, max, valueMatchColor);
+    }
+    if (prevProps.height !== height || prevProps.width !== width) {
+      this.renderGauge();
     }
   }
 
@@ -46,8 +51,6 @@ class Gauge extends Component {
     if (this.valueLine) {
       // TODO: add animation based on animated prop
       this.valueLine
-        .transition()
-        .duration(300)
         .attr('d', buildValuePath(this.SVGsize, min, max, value))
         .style('fill', paintValuePath(value, this.completeThresholds, this.paint));
     }
@@ -68,6 +71,10 @@ class Gauge extends Component {
       width,
     } = this.props;
 
+    if (this.chartContainer) {
+      this.chartContainer.remove();
+    }
+
     const el = this.container;
     this.containerWidth = width ? width - 20 : getContainerSize(this.sizeContainer)[0];;
     this.containerHeight = height ? height - 20 : getContainerSize(this.sizeContainer)[1];
@@ -81,10 +88,12 @@ class Gauge extends Component {
     this.paint.setSpectrum(...colors);
     this.paint.setNumberRange(0, Math.max(this.completeThresholds.length - 1, 1));
 
-    const chart = select(el).append('svg:svg')
-			.attr('class', 'chart')
+    this.chartContainer = select(el).append('svg:svg')
+      .attr('class', 'chart')
       .attr('height', this.smallerSide)
-			.attr('width', this.smallerSide)
+      .attr('width', this.smallerSide)
+
+    const chart = this.chartContainer
       .append('svg:g')
       .attr('transform', `translate(${this.smallerSide / 2},${(this.smallerSide / 2) * 1.25})`);
 

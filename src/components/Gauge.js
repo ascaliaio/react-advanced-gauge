@@ -28,18 +28,15 @@ class Gauge extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      height,
       max,
       min,
       value,
       valueMatchColor,
-      width,
     } = this.props;
     // TODO: Implement handling of other props changes
     if (prevProps.value !== this.props.value) {
       this.changeValue(value, min, max, valueMatchColor);
-    }
-    if (prevProps.height !== height || prevProps.width !== width) {
+    } else {
       this.renderGauge();
     }
   }

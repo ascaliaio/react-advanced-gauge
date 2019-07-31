@@ -25,7 +25,7 @@ class Demo extends Component {
         unit="Hz"
         value={this.state.value}
         valueMatchColor
-        width={300}
+        width={400}
       />
     </div>
   }

@@ -1,6 +1,6 @@
 {
   "name": "react-advanced-gauge",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "react-advanced-gauge React component",
   "main": "lib/index.js",
   "module": "es/index.js",

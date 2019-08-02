@@ -80,7 +80,6 @@ class Gauge extends Component {
     this.SVGsize = this.smallerSide * 0.7;
 
     this.completeThresholds = thresholds ? [...thresholds, max] : [max];
-    
     this.paint = interpolateRgbBasis(colors);
 
     this.chartContainer = select(el).append('svg:svg')
@@ -96,7 +95,7 @@ class Gauge extends Component {
       chart.selectAll('path')
         .data(this.completeThresholds)
         .enter().append('svg:path')
-        .style('fill', (d, i) => this.paint(i/(thresholds.length)))
+        .style('fill', (d, i) => this.paint(this.completeThresholds.length ? this.completeThresholds.length : 0))
         .attr('d', buildDomain(this.SVGsize, this.SVGsize, min, max, this.completeThresholds));
     }
 

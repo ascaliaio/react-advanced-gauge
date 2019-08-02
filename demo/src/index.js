@@ -7,27 +7,26 @@ class Demo extends Component {
   constructor() {
     super();
     this.state = {
-      colors: ['blue'],
+      colors: ['#FFFF00'],
       value: 0,
       showUnit: false,
     };
   }
   componentDidMount() {
     setInterval(() => this.setState({ value: Math.round(Math.random() * 200) - 120 }), 2000);
-    setInterval(() => this.setState({ showUnit: !this.state.showUnit }), 4000);
   }
   render() {
     return <div>
       <h1>react-advanced-gauge Demo</h1>
       <Gauge
-        // colors={this.state.colors}
+        colors={this.state.colors}
         height={600}
         min={-100}
         max={100}
         label="fkdsljaflkasdj"
         showUnit={this.state.showUnit}
         showDomain
-        thresholds={[20, 60]}
+        thresholds={[]}
         unit="Hz"
         value={this.state.value}
         valueMatchColor

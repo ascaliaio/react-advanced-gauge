@@ -51,7 +51,7 @@ export const paintValuePath = (value, thresholds, colors) => {
   if (index === -1) {
     return colors(1);
   }
-  return colors(index / (thresholds.length - 1));
+  return colors(index / Math.min(thresholds.length - 1, 1));
 }
 
 export const getContainerSize = element => [element.clientWidth, Math.max(element.clientHeight, MIN_HEIGHT)];

@@ -1,5 +1,7 @@
 import { arc } from 'd3-shape';
+import { interpolateRgbBasis } from 'd3-interpolate';
 import {
+  DEFAULT_COLORS,
   MAX_ANGLE,
   MIN_ANGLE,
   MIN_HEIGHT,
@@ -49,9 +51,33 @@ export const buildValuePath = (height, min, max, value) => arc()
 export const paintValuePath = (value, thresholds, colors) => {
   const index = thresholds.findIndex(threshold => value < threshold);
   if (index === -1) {
-    return colors(1);
+    return colors.get(thresholds.length - 1);
   }
-  return colors(index / Math.min(thresholds.length - 1, 1));
+  return colors.get(index);
 }
 
 export const getContainerSize = element => [element.clientWidth, Math.max(element.clientHeight, MIN_HEIGHT)];
+
+export class Color {
+  constructor(colors = undefined, total = 0) {
+    this.colors = colors;
+    this.total = total;
+    this.init();
+  }
+
+  init() {
+    if (this.colors) {
+      this.paint = this.colors;
+    } else {
+      this.paint = interpolateRgbBasis(DEFAULT_COLORS);
+    }
+  }
+
+  get(i) {
+    if (this.colors) {
+      return this.colors[i];
+    } else {
+      return this.paint(i / Math.max(this.total - 1, 1));
+    }
+  }
+}

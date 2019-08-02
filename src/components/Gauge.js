@@ -9,6 +9,7 @@ import {
   buildDomain,
   buildPath,
   buildValuePath,
+  Color,
   getContainerSize,
   paintValuePath,
 } from '../utils';
@@ -80,7 +81,15 @@ class Gauge extends Component {
     this.SVGsize = this.smallerSide * 0.7;
 
     this.completeThresholds = thresholds ? [...thresholds, max] : [max];
-    this.paint = interpolateRgbBasis(colors);
+    // this.paint = interpolateRgbBasis(colors);
+    if (
+      colors &&
+      this.completeThresholds.length !== colors.length
+    ) {
+      throw Error('Number of colors should always be 1 more than the number of colors provided');
+    }
+
+    this.paint = new Color(colors, this.completeThresholds.length);
 
     this.chartContainer = select(el).append('svg:svg')
       .attr('class', 'chart')
@@ -95,7 +104,7 @@ class Gauge extends Component {
       chart.selectAll('path')
         .data(this.completeThresholds)
         .enter().append('svg:path')
-        .style('fill', (d, i) => this.paint(this.completeThresholds.length ? this.completeThresholds.length : 0))
+        .style('fill', (d, i) => this.paint.get(i))
         .attr('d', buildDomain(this.SVGsize, this.SVGsize, min, max, this.completeThresholds));
     }
 
@@ -135,7 +144,7 @@ class Gauge extends Component {
       .text(value)
       .style('font-size', `${this.SVGsize/4}px`)
       .style('font-weight', '600')
-      .style('fill', valueMatchColor ? paintValuePath(value, this.completeThresholds, this.paint) : '#555')
+      .style('fill', valueMatchColor ? paintValuePath(value, this.completeThresholds, this.paint) : DEFAULT_VALUE_PATH_COLOR)
       .style('text-anchor', 'middle')
       .style('transform', `translateY(${this.SVGsize/10}px)`);
 

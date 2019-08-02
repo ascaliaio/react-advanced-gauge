@@ -1,12 +1,6 @@
-const colors = {
-  RED: '#e74c3c',
-  YELLOW: '#fff000',
-  GREEN: '#2ecc71',
-};
-
 export const defaults = {
   animated: true,
-  colors: [colors.GREEN, colors.YELLOW, colors.RED],
+  colors: undefined,
   isNegative: false,
   min: 0,
   max: 100,

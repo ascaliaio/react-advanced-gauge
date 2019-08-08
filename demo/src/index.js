@@ -12,7 +12,7 @@ class Demo extends Component {
     };
   }
   componentDidMount() {
-    setInterval(() => this.setState({ value: Math.round(Math.random() * 200) - 120 }), 2000);
+    setInterval(() => this.setState({ value: Math.round(Math.random() * 200) - 120 }), 5000);
   }
   render() {
     return <div>

@@ -9,6 +9,7 @@ import {
   buildPath,
   buildValuePath,
   Color,
+  getEndAngle,
   getContainerSize,
   paintValuePath,
 } from '../utils';
@@ -33,22 +34,30 @@ class Gauge extends Component {
       value,
       valueMatchColor,
     } = this.props;
-    if (prevProps.value !== this.props.value) {
-      this.changeValue(value, min, max, valueMatchColor);
+    if (prevProps.value !== value) {
+      this.changeValue(prevProps.value, value, this.SVGsize, min, max, valueMatchColor);
     } else {
       this.renderGauge();
     }
   }
 
-  changeValue(value, min, max, valueMatchColor = false) {
+  changeValue(oldValue = 0, newValue, min, max, height, valueMatchColor = false) {
     this.textValue
-      .text(value)
-      .style('fill', valueMatchColor ? paintValuePath(value, this.completeThresholds, this.paint) : DEFAULT_VALUE_PATH_COLOR)
+      .text(newValue)
+      .style('fill', valueMatchColor ? paintValuePath(newValue, this.completeThresholds, this.paint) : DEFAULT_VALUE_PATH_COLOR)
     if (this.valueLine) {
       // TODO: add animation based on animated prop
+      // this.valueLine
+      //   .attr('d', buildValuePath(this.SVGsize, min, max, value))
       this.valueLine
-        .attr('d', buildValuePath(this.SVGsize, min, max, value))
-        .style('fill', paintValuePath(value, this.completeThresholds, this.paint));
+        .transition()
+        .duration(300)
+        .attrTween('d', () => {
+          debugger;
+          const k = getEndAngle(this.arc, min, max, oldValue, newValue, height);
+          return k;
+        })
+        .style('fill', paintValuePath(newValue, this.completeThresholds, this.paint));
     }
   }
 
@@ -133,10 +142,12 @@ class Gauge extends Component {
       .attr('class', 'rag-domain-max')
       .style('transform', `translate(${valuePathGroup.node().getBBox().width / 2}px, ${this.SVGsize/5}px)`);
 
+    this.arc = buildValuePath(this.SVGsize, min, max, value)
+
     this.valueLine = chart.append('svg:path')
 			// .style('fill', this.paint.colourAt(this.completeThresholds.findIndex(threshold => value < threshold)))
 			.style('fill', paintValuePath(value, this.completeThresholds, this.paint))
-      .attr('d', buildValuePath(this.SVGsize, min, max, value));
+      .attr('d', this.arc);
 
     this.textValue = chart.append('svg:text')
       .text(value)

@@ -1,5 +1,5 @@
 import { arc } from 'd3-shape';
-import { interpolateRgbBasis } from 'd3-interpolate';
+import { interpolateNumber, interpolateRgbBasis } from 'd3-interpolate';
 import {
   DEFAULT_COLORS,
   MAX_ANGLE,
@@ -47,6 +47,15 @@ export const buildValuePath = (height, min, max, value) => arc()
     const percentage = calculatePercentage(min, max, value);
     return deg2rad(MIN_ANGLE + (valueInDomain(0.01, 1, percentage) * (MAX_ANGLE - MIN_ANGLE)));
   });
+
+export const getEndAngle = (myArc, min, max, oldValue, newValue, height) => () => {
+  const oldAngle = deg2rad(MIN_ANGLE + (valueInDomain(0.01, 1, calculatePercentage(min, max, oldValue)) * (MAX_ANGLE - MIN_ANGLE)));
+  const newAngle = deg2rad(MIN_ANGLE + (valueInDomain(0.01, 1, calculatePercentage(min, max, newValue)) * (MAX_ANGLE - MIN_ANGLE)));
+  const interpolate = interpolateNumber(oldAngle, newAngle);
+  return (t) => {
+    return myArc(interpolate(t));
+  } 
+}
 
 export const paintValuePath = (value, thresholds, colors) => {
   const index = thresholds.findIndex(threshold => value < threshold);

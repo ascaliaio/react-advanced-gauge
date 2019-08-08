@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { select } from 'd3-selection';
 import {} from 'd3-transition/src/selection';
-import { interpolateRgbBasis } from 'd3-interpolate';
 import { defaults } from '../defaults';
 import { types } from '../types';
 import { DEFAULT_VALUE_PATH_COLOR } from '../constants';
@@ -34,7 +33,6 @@ class Gauge extends Component {
       value,
       valueMatchColor,
     } = this.props;
-    // TODO: Implement handling of other props changes
     if (prevProps.value !== this.props.value) {
       this.changeValue(value, min, max, valueMatchColor);
     } else {

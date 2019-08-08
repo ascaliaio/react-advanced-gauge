@@ -6,7 +6,6 @@ export const defaults = {
   max: 100,
   showDomain: false,
   showDomainLabels: false,
-  showLabel: false,
   showUnit: false,
   unit: '',
   valueMatchColor: false,
